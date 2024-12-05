@@ -15,6 +15,7 @@ import (
 )
 
 type GreetServer struct{}
+
 var _ greetv1connect.GreetServiceHandler = &GreetServer{}
 
 func (s *GreetServer) Greet(
