@@ -4,14 +4,14 @@ package greet.v1;
 
 option go_package = "github.com/naoyafurudono/proto-cli/gen/greet/v1;greetv1";
 
-message GreetRequest {
+message HelloRequest {
   string name = 1;
 }
 
-message GreetResponse {
+message HelloResponse {
   string greeting = 1;
 }
 
 service GreetService {
-  rpc Greet(GreetRequest) returns (GreetResponse) {}
+  rpc Hello(HelloRequest) returns (HelloResponse) {}
 }

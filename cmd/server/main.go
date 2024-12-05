@@ -16,12 +16,12 @@ type GreetServer struct{}
 
 var _ greetv1connect.GreetServiceHandler = &GreetServer{}
 
-func (s *GreetServer) Greet(
+func (s *GreetServer) Hello(
 	ctx context.Context,
-	req *connect.Request[greetv1.GreetRequest],
-) (*connect.Response[greetv1.GreetResponse], error) {
+	req *connect.Request[greetv1.HelloRequest],
+) (*connect.Response[greetv1.HelloResponse], error) {
 	log.Println("Request headers: ", req.Header())
-	res := connect.NewResponse(&greetv1.GreetResponse{
+	res := connect.NewResponse(&greetv1.HelloResponse{
 		Greeting: fmt.Sprintf("Hello, %s!", req.Msg.Name),
 	})
 	res.Header().Set("Greet-Version", "v1")
@@ -31,8 +31,8 @@ func (s *GreetServer) Greet(
 func main() {
 	greeter := &GreetServer{}
 
-	req := connect.NewRequest(&greetv1.GreetRequest{Name: "naoya"})
-	res, err := greeter.Greet(context.Background(), req)
+	req := connect.NewRequest(&greetv1.HelloRequest{Name: "naoya"})
+	res, err := greeter.Hello(context.Background(), req)
 	if err != nil {
 		slog.Error("fail to greet", slog.Attr{Key: "error", Value: slog.AnyValue(err)})
 	}

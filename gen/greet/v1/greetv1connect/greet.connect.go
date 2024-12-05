@@ -33,19 +33,19 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// GreetServiceGreetProcedure is the fully-qualified name of the GreetService's Greet RPC.
-	GreetServiceGreetProcedure = "/greet.v1.GreetService/Greet"
+	// GreetServiceHelloProcedure is the fully-qualified name of the GreetService's Hello RPC.
+	GreetServiceHelloProcedure = "/greet.v1.GreetService/Hello"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
 	greetServiceServiceDescriptor     = v1.File_greet_v1_greet_proto.Services().ByName("GreetService")
-	greetServiceGreetMethodDescriptor = greetServiceServiceDescriptor.Methods().ByName("Greet")
+	greetServiceHelloMethodDescriptor = greetServiceServiceDescriptor.Methods().ByName("Hello")
 )
 
 // GreetServiceClient is a client for the greet.v1.GreetService service.
 type GreetServiceClient interface {
-	Greet(context.Context, *connect.Request[v1.GreetRequest]) (*connect.Response[v1.GreetResponse], error)
+	Hello(context.Context, *connect.Request[v1.HelloRequest]) (*connect.Response[v1.HelloResponse], error)
 }
 
 // NewGreetServiceClient constructs a client for the greet.v1.GreetService service. By default, it
@@ -58,10 +58,10 @@ type GreetServiceClient interface {
 func NewGreetServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) GreetServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &greetServiceClient{
-		greet: connect.NewClient[v1.GreetRequest, v1.GreetResponse](
+		hello: connect.NewClient[v1.HelloRequest, v1.HelloResponse](
 			httpClient,
-			baseURL+GreetServiceGreetProcedure,
-			connect.WithSchema(greetServiceGreetMethodDescriptor),
+			baseURL+GreetServiceHelloProcedure,
+			connect.WithSchema(greetServiceHelloMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -69,17 +69,17 @@ func NewGreetServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 
 // greetServiceClient implements GreetServiceClient.
 type greetServiceClient struct {
-	greet *connect.Client[v1.GreetRequest, v1.GreetResponse]
+	hello *connect.Client[v1.HelloRequest, v1.HelloResponse]
 }
 
-// Greet calls greet.v1.GreetService.Greet.
-func (c *greetServiceClient) Greet(ctx context.Context, req *connect.Request[v1.GreetRequest]) (*connect.Response[v1.GreetResponse], error) {
-	return c.greet.CallUnary(ctx, req)
+// Hello calls greet.v1.GreetService.Hello.
+func (c *greetServiceClient) Hello(ctx context.Context, req *connect.Request[v1.HelloRequest]) (*connect.Response[v1.HelloResponse], error) {
+	return c.hello.CallUnary(ctx, req)
 }
 
 // GreetServiceHandler is an implementation of the greet.v1.GreetService service.
 type GreetServiceHandler interface {
-	Greet(context.Context, *connect.Request[v1.GreetRequest]) (*connect.Response[v1.GreetResponse], error)
+	Hello(context.Context, *connect.Request[v1.HelloRequest]) (*connect.Response[v1.HelloResponse], error)
 }
 
 // NewGreetServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -88,16 +88,16 @@ type GreetServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewGreetServiceHandler(svc GreetServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	greetServiceGreetHandler := connect.NewUnaryHandler(
-		GreetServiceGreetProcedure,
-		svc.Greet,
-		connect.WithSchema(greetServiceGreetMethodDescriptor),
+	greetServiceHelloHandler := connect.NewUnaryHandler(
+		GreetServiceHelloProcedure,
+		svc.Hello,
+		connect.WithSchema(greetServiceHelloMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/greet.v1.GreetService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case GreetServiceGreetProcedure:
-			greetServiceGreetHandler.ServeHTTP(w, r)
+		case GreetServiceHelloProcedure:
+			greetServiceHelloHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -107,6 +107,6 @@ func NewGreetServiceHandler(svc GreetServiceHandler, opts ...connect.HandlerOpti
 // UnimplementedGreetServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedGreetServiceHandler struct{}
 
-func (UnimplementedGreetServiceHandler) Greet(context.Context, *connect.Request[v1.GreetRequest]) (*connect.Response[v1.GreetResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("greet.v1.GreetService.Greet is not implemented"))
+func (UnimplementedGreetServiceHandler) Hello(context.Context, *connect.Request[v1.HelloRequest]) (*connect.Response[v1.HelloResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("greet.v1.GreetService.Hello is not implemented"))
 }
