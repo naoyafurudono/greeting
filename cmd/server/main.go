@@ -28,6 +28,13 @@ func (s *GreetServer) Hello(
 	return res, nil
 }
 
+func (s *GreetServer) Thanks(
+	ctx context.Context,
+	req *connect.Request[greetv1.ThanksRequest],
+) (*connect.Response[greetv1.ThanksResponse], error) {
+	return nil, nil
+}
+
 func main() {
 	greeter := &GreetServer{}
 
