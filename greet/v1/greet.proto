@@ -4,8 +4,11 @@ package greet.v1;
 
 option go_package = "github.com/naoyafurudono/proto-cli/gen/greet/v1;greetv1";
 
+// Important service.
 service GreetService {
+  // basic greeting
   rpc Hello(HelloRequest) returns (HelloResponse) {}
+  // you cannot live alone
   rpc Thanks(ThanksRequest) returns (ThanksResponse) {}
 }
 
