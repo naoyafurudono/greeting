@@ -48,7 +48,9 @@ var (
 
 // GreetServiceClient is a client for the greet.v1.GreetService service.
 type GreetServiceClient interface {
+	// basic greeting
 	Hello(context.Context, *connect.Request[v1.HelloRequest]) (*connect.Response[v1.HelloResponse], error)
+	// you cannot live alone
 	Thanks(context.Context, *connect.Request[v1.ThanksRequest]) (*connect.Response[v1.ThanksResponse], error)
 }
 
@@ -95,7 +97,9 @@ func (c *greetServiceClient) Thanks(ctx context.Context, req *connect.Request[v1
 
 // GreetServiceHandler is an implementation of the greet.v1.GreetService service.
 type GreetServiceHandler interface {
+	// basic greeting
 	Hello(context.Context, *connect.Request[v1.HelloRequest]) (*connect.Response[v1.HelloResponse], error)
+	// you cannot live alone
 	Thanks(context.Context, *connect.Request[v1.ThanksRequest]) (*connect.Response[v1.ThanksResponse], error)
 }
 
