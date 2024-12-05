@@ -13,6 +13,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Service implementation
+
 type GreetServer struct{}
 
 var _ greetv1connect.GreetServiceHandler = &GreetServer{}
@@ -40,6 +42,8 @@ func (s *GreetServer) Thanks(
 	res.Header().Set("Greet-Version", "v1")
 	return res, nil
 }
+
+// CLI implementation
 
 var greetService = &cobra.Command{
 	Use:   "great",
