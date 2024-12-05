@@ -31,7 +31,7 @@ func (s *GreetServer) Greet(
 func main() {
 	greeter := &GreetServer{}
 
-	req := connect.NewRequest[greetv1.GreetRequest](&greetv1.GreetRequest{Name: "naoya"})
+	req := connect.NewRequest(&greetv1.GreetRequest{Name: "naoya"})
 	res, err := greeter.Greet(context.Background(), req)
 	if err != nil {
 		slog.Error("fail to greet", slog.Attr{Key: "error", Value: slog.AnyValue(err)})
