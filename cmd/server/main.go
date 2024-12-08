@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -51,25 +52,32 @@ var greetService = &cobra.Command{
 	Long:  "Important service.",
 }
 
+var greeter = &GreetServer{}
+var reqData *string
+
 // hello rpc
 var greetServiceHello = &cobra.Command{
 	Use:   "hello",
 	Short: "basic greeting",
 	Long:  "basic greeting",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		greeter := &GreetServer{}
-
-		req := connect.NewRequest(&greetv1.HelloRequest{Name: greetServiceHelloName})
-		res, err := greeter.Hello(context.Background(), req)
+		var req greetv1.HelloRequest
+		json.Unmarshal([]byte(*reqData), &req)
+		res, err := greeter.Hello(
+			context.Background(),
+			connect.NewRequest(&req),
+		)
 		if err != nil {
 			return err
 		}
-
-		fmt.Println(res.Msg.GetGreeting())
+		out, err := json.Marshal(res.Msg)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(out))
 		return nil
 	},
 }
-var greetServiceHelloName string
 
 // thanks rpc
 var greetServiceThanks = &cobra.Command{
@@ -77,25 +85,26 @@ var greetServiceThanks = &cobra.Command{
 	Short: "basic greeting",
 	Long:  "basic greeting",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		greeter := &GreetServer{}
-
-		req := connect.NewRequest(&greetv1.ThanksRequest{Name: greetServiceThanksName, Why: greetServiceThanksWhy})
-		res, err := greeter.Thanks(context.Background(), req)
+		var req greetv1.ThanksRequest
+		json.Unmarshal([]byte(*reqData), &req)
+		res, err := greeter.Thanks(
+			context.Background(),
+			connect.NewRequest(&req),
+		)
 		if err != nil {
 			return err
 		}
-
-		fmt.Println(res.Msg.GetGreeting())
+		out, err := json.Marshal(res.Msg)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(out))
 		return nil
 	},
 }
-var greetServiceThanksName string
-var greetServiceThanksWhy string
 
 func init() {
-	greetServiceHello.Flags().StringVar(&greetServiceHelloName, "name", "", "")
-	greetServiceThanks.Flags().StringVar(&greetServiceThanksName, "name", "", "")
-	greetServiceThanks.Flags().StringVar(&greetServiceThanksWhy, "why", "", "")
+	reqData = greetService.PersistentFlags().StringP("data", "d", "{}", "request message represented as a JSON")
 
 	greetService.AddCommand(
 		greetServiceHello,
