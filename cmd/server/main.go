@@ -44,6 +44,7 @@ func (s *GreetServer) Thanks(
 	return res, nil
 }
 
+// CLI implementation (generated)
 func rpcCommand[Req, Res any](
 	ctx context.Context,
 	rpc func(context.Context, *connect.Request[Req]) (*connect.Response[Res], error),
@@ -73,8 +74,7 @@ func rpcCommand[Req, Res any](
 	}
 }
 
-// CLI implementation (generated)
-func newGreetCommand(s greetv1connect.GreetServiceHandler) *cobra.Command {
+func newGreetCommand(ctx context.Context, s greetv1connect.GreetServiceHandler) *cobra.Command {
 	var greetService = &cobra.Command{
 		Use:   "great",
 		Short: "Important service.",
@@ -82,14 +82,14 @@ func newGreetCommand(s greetv1connect.GreetServiceHandler) *cobra.Command {
 	}
 	var reqData *string = greetService.PersistentFlags().StringP("data", "d", "{}", "request message represented as a JSON")
 
-	greetServiceHello := rpcCommand(context.Background(),
+	greetServiceHello := rpcCommand(ctx,
 		s.Hello,
 		"hello",
 		"basic greeting",
 		"basic greeting",
 		reqData,
 	)
-	greetServiceThanks := rpcCommand(context.Background(),
+	greetServiceThanks := rpcCommand(ctx,
 		s.Thanks,
 		"thanks",
 		"you cannot live alone",
@@ -105,7 +105,7 @@ func newGreetCommand(s greetv1connect.GreetServiceHandler) *cobra.Command {
 }
 
 func main() {
-	var greetCmd = newGreetCommand(&GreetServer{})
+	var greetCmd = newGreetCommand(context.Background(), &GreetServer{})
 	if err := greetCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
