@@ -16,17 +16,24 @@ import (
 	"golang.org/x/net/http2/h2c"
 )
 
-// The entry point (what you implement)
 func main() {
 	if err := root.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+		if errors.Is(err, clio.RPCFailed) {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		} else if errors.Is(err, clio.CLIFailed) {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(2)
+		} else {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(3)
+		}
 	}
 }
 
 var root = cobra.Command{
-	Use:   "root",
-	Short: "root",
+	Use:   "greeting",
+	Short: "greeting",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return nil
 	},
@@ -50,16 +57,5 @@ func init() {
 		},
 	}
 	greetCmd := greetv1clio.NewGreetServiceCommand(context.Background(), &service.GreetServer{}, os.Stdout)
-	if err := greetCmd.Execute(); err != nil {
-		if errors.Is(err, clio.CLIFailed) {
-			panic(err)
-		} else if errors.Is(err, clio.RPCFailed) {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
-		} else {
-			panic("never")
-		}
-	}
 	root.AddCommand(serveCmd, greetCmd)
-
 }
