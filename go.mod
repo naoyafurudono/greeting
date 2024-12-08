@@ -10,7 +10,7 @@ require (
 
 require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/naoyafurudono/clio-go v0.0.0-20241208101548-bc2dc14a82b7 // indirect
+	github.com/naoyafurudono/clio-go v0.0.0-20241208151358-ece0c21e2408 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/net v0.32.0 // indirect
 )

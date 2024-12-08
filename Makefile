@@ -52,4 +52,4 @@ $(BIN)/protoc-gen-connect-go: Makefile go.mod
 
 $(BIN)/protoc-gen-clio-go: Makefile
 	@mkdir -p $(@D)
-	$(GO) install github.com/naoyafurudono/clio-go/cmd/protoc-gen-clio-go@latest
+	$(GO) install github.com/naoyafurudono/clio-go/cmd/protoc-gen-clio-go@v0.0.1

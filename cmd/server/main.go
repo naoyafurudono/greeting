@@ -11,7 +11,7 @@ import (
 
 // The entry point (what you implement)
 func main() {
-	greetCmd := greetv1clio.NewGreetServiceCommand(context.Background() , &service.GreetServer{})
+	greetCmd := greetv1clio.NewGreetServiceCommand(context.Background(), &service.GreetServer{}, os.Stdout)
 	if err := greetCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

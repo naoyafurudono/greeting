@@ -9,9 +9,10 @@ import (
 	clio_go "github.com/naoyafurudono/clio-go"
 	greetv1connect "github.com/naoyafurudono/proto-cli/gen/greet/v1/greetv1connect"
 	cobra "github.com/spf13/cobra"
+	io "io"
 )
 
-func NewGreetServiceCommand(ctx context.Context, s greetv1connect.GreetServiceHandler) *cobra.Command {
+func NewGreetServiceCommand(ctx context.Context, s greetv1connect.GreetServiceHandler, w io.Writer) *cobra.Command {
 	var greetservice = cobra.Command{
 		Use:   "greetservice",
 		Long:  "Important service.",
@@ -24,6 +25,7 @@ func NewGreetServiceCommand(ctx context.Context, s greetv1connect.GreetServiceHa
 		"basic greeting",
 		"basic greeting",
 		reqData,
+		w,
 	)
 	var thanks = clio_go.RpcCommand(ctx,
 		s.Thanks,
@@ -31,6 +33,7 @@ func NewGreetServiceCommand(ctx context.Context, s greetv1connect.GreetServiceHa
 		"you cannot live alone",
 		"you cannot live alone",
 		reqData,
+		w,
 	)
 	greetservice.AddCommand(
 		hello,

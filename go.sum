@@ -9,6 +9,8 @@ github.com/naoyafurudono/clio-go v0.0.0-20241208094501-3e8c82bfdb5a h1:PJkpfe36J
 github.com/naoyafurudono/clio-go v0.0.0-20241208094501-3e8c82bfdb5a/go.mod h1:4IETTp+8upX7D0och/uLpN1KyK/BEvQ/oZ3i1QQyP/A=
 github.com/naoyafurudono/clio-go v0.0.0-20241208101548-bc2dc14a82b7 h1:cTTafZQGfLrdi8QRWd6iwswHhkugSqxbkmks40Kth5M=
 github.com/naoyafurudono/clio-go v0.0.0-20241208101548-bc2dc14a82b7/go.mod h1:4IETTp+8upX7D0och/uLpN1KyK/BEvQ/oZ3i1QQyP/A=
+github.com/naoyafurudono/clio-go v0.0.0-20241208151358-ece0c21e2408 h1:///vy+Xb8Fc+z4L2QucYZx2EO3zcq2ALvg3U6jclZWA=
+github.com/naoyafurudono/clio-go v0.0.0-20241208151358-ece0c21e2408/go.mod h1:4IETTp+8upX7D0och/uLpN1KyK/BEvQ/oZ3i1QQyP/A=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/spf13/cobra v1.8.1 h1:e5/vxKd/rZsfSJMUX1agtjeTDf+qv1/JdBF8gg5k9ZM=
 github.com/spf13/cobra v1.8.1/go.mod h1:wHxEcudfqmLYa8iTfL+OuZPbBZkmvliBWKIezN3kD9Y=
