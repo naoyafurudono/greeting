@@ -14,7 +14,7 @@ import (
 
 func NewGreetServiceCommand(ctx context.Context, s greetv1connect.GreetServiceHandler, w io.Writer) *cobra.Command {
 	var greetservice = cobra.Command{
-		Use:   "greetservice",
+		Use:   "greet",
 		Long:  "Important service.",
 		Short: "Important service.",
 	}
