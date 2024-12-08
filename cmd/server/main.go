@@ -44,76 +44,74 @@ func (s *GreetServer) Thanks(
 	return res, nil
 }
 
-// CLI implementation
+// CLI implementation (generated)
+func newGreetCommand(s greetv1connect.GreetServiceHandler) *cobra.Command {
+	var greetService = &cobra.Command{
+		Use:   "great",
+		Short: "Important service.",
+		Long:  "Important service.",
+	}
+	var reqData *string = greetService.PersistentFlags().StringP("data", "d", "{}", "request message represented as a JSON")
+	// var greeter = &GreetServer{}
 
-var greetService = &cobra.Command{
-	Use:   "great",
-	Short: "Important service.",
-	Long:  "Important service.",
-}
+	// hello rpc
+	var greetServiceHello = &cobra.Command{
+		Use:   "hello",
+		Short: "basic greeting",
+		Long:  "basic greeting",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var req greetv1.HelloRequest
+			json.Unmarshal([]byte(*reqData), &req)
+			res, err := s.Hello(
+				context.Background(),
+				connect.NewRequest(&req),
+			)
+			if err != nil {
+				return err
+			}
+			out, err := json.Marshal(res.Msg)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(out))
+			return nil
+		},
+	}
 
-var greeter = &GreetServer{}
-var reqData *string
-
-// hello rpc
-var greetServiceHello = &cobra.Command{
-	Use:   "hello",
-	Short: "basic greeting",
-	Long:  "basic greeting",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		var req greetv1.HelloRequest
-		json.Unmarshal([]byte(*reqData), &req)
-		res, err := greeter.Hello(
-			context.Background(),
-			connect.NewRequest(&req),
-		)
-		if err != nil {
-			return err
-		}
-		out, err := json.Marshal(res.Msg)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(out))
-		return nil
-	},
-}
-
-// thanks rpc
-var greetServiceThanks = &cobra.Command{
-	Use:   "thanks",
-	Short: "basic greeting",
-	Long:  "basic greeting",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		var req greetv1.ThanksRequest
-		json.Unmarshal([]byte(*reqData), &req)
-		res, err := greeter.Thanks(
-			context.Background(),
-			connect.NewRequest(&req),
-		)
-		if err != nil {
-			return err
-		}
-		out, err := json.Marshal(res.Msg)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(out))
-		return nil
-	},
-}
-
-func init() {
-	reqData = greetService.PersistentFlags().StringP("data", "d", "{}", "request message represented as a JSON")
-
+	// thanks rpc
+	var greetServiceThanks = &cobra.Command{
+		Use:   "thanks",
+		Short: "basic greeting",
+		Long:  "basic greeting",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var req greetv1.ThanksRequest
+			json.Unmarshal([]byte(*reqData), &req)
+			res, err := s.Thanks(
+				context.Background(),
+				connect.NewRequest(&req),
+			)
+			if err != nil {
+				return err
+			}
+			out, err := json.Marshal(res.Msg)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(out))
+			return nil
+		},
+	}
+	
 	greetService.AddCommand(
 		greetServiceHello,
 		greetServiceThanks,
 	)
+	return greetService
 }
 
 func main() {
-	if err := greetService.Execute(); err != nil {
+	var greetCmd = newGreetCommand(&GreetServer{})
+	if err := greetCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
