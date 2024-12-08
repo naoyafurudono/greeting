@@ -26,15 +26,15 @@ clean: ## Delete intermediate build artifacts
 .PHONY: run
 run: build ## Execute the command `make run ARGS="hello --name naoya"` as `greet hello --name naoya` (default)
 	$(BIN)/main $(ARGS)
-	
+
 .PHONY: /build
 build: $(BIN)/build ## Build all packages
 
 .PHONY: generate
-generate: $(BIN)/buf $(BIN)/protoc-gen-go $(BIN)/protoc-gen-connect-go $(BIN)/protoc-gen-doc ## Regenerate code and licenses
+generate: $(BIN)/buf $(BIN)/protoc-gen-go $(BIN)/protoc-gen-connect-go $(BIN)/protoc-gen-clio-go ## Regenerate code and licenses
 	rm -rf gen
 	PATH=$(BIN) $(BIN)/buf generate
-	
+
 $(BIN)/build: generate
 	$(GO) build -o $(@D)/main ./cmd/server/main.go
 
@@ -50,7 +50,6 @@ $(BIN)/protoc-gen-connect-go: Makefile go.mod
 	@mkdir -p $(@D)
 	$(GO) install connectrpc.com/connect/cmd/protoc-gen-connect-go
 
-$(BIN)/protoc-gen-doc: Makefile
+$(BIN)/protoc-gen-clio-go: Makefile
 	@mkdir -p $(@D)
-	$(GO) install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
-	
+	$(GO) install github.com/naoyafurudono/clio-go/cmd/protoc-gen-clio-go@latest
